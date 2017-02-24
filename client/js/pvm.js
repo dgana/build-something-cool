@@ -923,15 +923,10 @@ button.addEventListener('click', function (e) {
         `
         <div class="container white-text" style="position:relative; top:100px;">
           <div class="row">
-            <div class="high-score">
+            <div class="high-score" id="content_rank">
               <h2 class="center" style="font-family:bangers">High Score</h2>
               <hr style="width:32%">
-              <div id="player_name" class="col s6 center" style="font-size:28px; font-family:orbitron">
 
-              </div>
-              <div id="player_score" class="col s6 center" style="font-size:28px; font-family:orbitron">
-
-              </div>
             </div>
           </div>
         </div>
@@ -945,14 +940,26 @@ button.addEventListener('click', function (e) {
           dataType: 'json',
           success: function (data) {
             console.log(data)
-            data.forEach(function (player) {
-              $('#player_name').append(`<p>${player.name}</p>`)
-              $('#player_score').append(`<p>${player.score}%</p>`)
+            data.forEach(function (player, i) {
+              $('#content_rank').append(
+                `
+                  <div class="col s12" style="height:110px">
+                    <div class="col s1 offset-s3 center" style="font-size:48px; font-family:'bungee outline'">
+                      <p>${i+1}</p>
+                    </div>
+                    <div class="col s4 center" style="font-size:28px; font-family:orbitron; margin-top:30px;">
+                      <p>${player.name}</p>
+                    </div>
+                    <div class="col s2 center" style="font-size:28px; font-family:orbitron; margin-top:30px;">
+                      <p>${player.score}%</p>
+                    </div>
+                  </div>
+                `
+              )
             })
           }
         })
       }, 250)
-
 
       resetButton.addEventListener('click', function (e) {
         location.reload()
@@ -1000,15 +1007,10 @@ button.addEventListener('click', function (e) {
         `
         <div class="container white-text" style="position:relative; top:100px;">
           <div class="row">
-            <div class="high-score">
+            <div class="high-score" id="content_rank">
               <h2 class="center" style="font-family:bangers">High Score</h2>
               <hr style="width:32%">
-              <div id="player_name" class="col s6 center" style="font-size:28px; font-family:orbitron">
 
-              </div>
-              <div id="player_score" class="col s6 center" style="font-size:28px; font-family:orbitron">
-
-              </div>
             </div>
           </div>
         </div>
@@ -1022,9 +1024,22 @@ button.addEventListener('click', function (e) {
           dataType: 'json',
           success: function (data) {
             console.log(data)
-            data.forEach(function (player) {
-              $('#player_name').append(`<p>${player.name}</p>`)
-              $('#player_score').append(`<p>${player.score}%</p>`)
+            data.forEach(function (player, i) {
+              $('#content_rank').append(
+                `
+                  <div class="col s12" style="height:110px">
+                    <div class="col s1 offset-s3 center" style="font-size:48px; font-family:'bungee outline'">
+                      <p>${i+1}</p>
+                    </div>
+                    <div class="col s4 center" style="font-size:28px; font-family:orbitron; margin-top:30px;">
+                      <p>${player.name}</p>
+                    </div>
+                    <div class="col s2 center" style="font-size:28px; font-family:orbitron; margin-top:30px;">
+                      <p>${player.score}%</p>
+                    </div>
+                  </div>
+                `
+              )
             })
           }
         })

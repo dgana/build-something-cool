@@ -2,7 +2,7 @@ var playersModel = require('../models/playersModel.js')
 
 module.exports = {
   list: function (req, res) {
-    playersModel.find(function (err, players) {
+    playersModel.find({}, ['name', 'score'], { limit: 3, sort: { score: -1 }}, function (err, players) {
       if (err) {
         return res.status(500).json({
           message: 'Error when getting players.',
