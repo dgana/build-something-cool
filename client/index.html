@@ -6,15 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>PvM Game</title>
-
-    <!-- Link CSS untuk tampilan menu pemilihan Character -->
     <link href="css/menu.css" rel="stylesheet">
-
-    <!-- Link CSS untuk tampilan PvM -->
     <link href="css/pvm.css" rel="stylesheet">
-
-    <!-- Link Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Ek+Mukta|Orbitron|Russo+One" rel="stylesheet">
+    <link href="css/materialize.css" rel="stylesheet">
 
 </head>
 
@@ -22,13 +17,57 @@
     <div id="main">
     </div>
 
-    <!-- Link JS untuk tampilan menu pemilihan Character -->
+    <div id="modal1" class="modal modal-fixed-footer" style="height:160px; width:250px;">
+      <div class="modal-content" style="overflow:hidden;">
+        <div class="row">
+          <div class="input-field col s12">
+            <input placeholder="Input your name here" id="name" type="text" class="validate">
+            <label class="active" for="name">Name</label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a id="submit_name" class="waves-effect waves-light btn modal-trigger">Submit</a>
+      </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script>
+
+    $(document).ready(function(){
+      $('.modal').modal({
+        dismissible:false,
+        ready: function() { // Callback for Modal open. Modal and trigger parameters available.
+          nameChecker()
+        }
+      });
+    });
+
+    function nameChecker(){
+      $('#submit_name').click(function(){
+        if($('#name').val() === ''){
+          Materialize.toast('Please input your name!', 4000)
+        } else {
+          Materialize.toast('Have Fun! '+$('#name').val(), 4000)
+          $('.modal').modal('close')
+          $.ajax({
+            type: 'POST',
+            url: 'http://localhost:3000/api/players',
+            dataType: 'json',
+            data: { name: $('#name').val() },
+            success: function(data){
+              localStorage.setItem('name', data.name)
+            }
+          })
+        }
+      })
+    }
+
+    </script>
+    <script src="js/materialize.js"></script>
     <script src="js/menu.js"></script>
-
-    <!-- Link JS untuk object character -->
     <script src="js/character.js"></script>
-
-    <!-- Link JS untuk tampilan PvM -->
     <script src="js/pvm.js"></script>
 
 </body>
