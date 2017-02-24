@@ -7,9 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>PvM Game</title>
     <link href="css/menu.css" rel="stylesheet">
-    <link href="css/pvm.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Ek+Mukta|Orbitron|Russo+One" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Ek+Mukta|Orbitron|Russo+One|Bungee+Outline|Bangers" rel="stylesheet">
     <link href="css/materialize.css" rel="stylesheet">
+    <link href="css/pvm.css" rel="stylesheet">
 
 </head>
 
@@ -36,6 +37,7 @@
     <script>
 
     $(document).ready(function(){
+      localStorage.clear();
       $('.modal').modal({
         dismissible:false,
         ready: function() { // Callback for Modal open. Modal and trigger parameters available.
@@ -58,6 +60,7 @@
             data: { name: $('#name').val() },
             success: function(data){
               localStorage.setItem('name', data.name)
+              localStorage.setItem('id', data._id)
             }
           })
         }

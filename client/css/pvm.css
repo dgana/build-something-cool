@@ -298,7 +298,7 @@
     transition: 0.5s;
     opacity: 0.5;
     margin-top: 85px;
-    width: 75%;
+    width: 85%;
     height: 70px;
     border-radius: 20px;
     font-size: 26px;
@@ -308,4 +308,8 @@
 
 #play-again:hover {
     opacity: 0.8;
+}
+
+button:focus{
+  background-color: rgb(155, 147, 149);
 }

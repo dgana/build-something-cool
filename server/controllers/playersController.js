@@ -29,10 +29,23 @@ module.exports = {
   },
 
   update: function (req, res) {
-    id = req.params.id
+    var id = req.params.id
     playersModel.findOneAndUpdate({_id: id}, { score: req.body.score }, { new: true }, function (err, user) {
       if (err) return res.send(500, { error: err })
       return res.json(user)
+    })
+  },
+
+  remove: function (req, res) {
+    var id = req.params.id
+    playersModel.findByIdAndRemove(id, function (err, datas) {
+      if (err) {
+        return res.status(500).json({
+          message: 'Error when deleting the datas.',
+          error: err
+        })
+      }
+      return res.status(201).json(datas)
     })
   }
 

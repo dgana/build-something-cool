@@ -38,7 +38,7 @@ button.addEventListener('click', function (e) {
   var playerStatus = document.getElementsByClassName('player-status')[0]
   var createParagraph1 = document.createElement('p')
   createParagraph1.setAttribute('id', 'class-name')
-  // var newPlayerClass = playerClass.replace(/[a-z]/, function(x) {
+  // var playerName = playerClass.replace(/[a-z]/, function(x) {
   //     return x.toUpperCase()
   // })
   var createParagraph1Text = document.createTextNode(localStorage.getItem('name'))
@@ -320,7 +320,7 @@ button.addEventListener('click', function (e) {
             playerTextStatus.innerHTML = "<img src='img/attack2-new.png' width='45px' alt='Attack Icon' />: " +
               player.attack + ' <br /> You received ' + monster.attack + ' attack damage from Hulk!'
             monsterTextStatus.innerHTML = "<img src='img/attack2-new.png' width='45px' alt='Attack Icon' />: " +
-              monster.attack + ' <br /> The Hulk received ' + player.attack + ' attack damage from the ' + newPlayerClass + '!'
+              monster.attack + ' <br /> The Hulk received ' + player.attack + ' attack damage from the ' + localStorage.getItem('name') + '!'
           }, 500)
         }
         if (i === 1) {
@@ -413,7 +413,7 @@ button.addEventListener('click', function (e) {
             playerTextStatus.innerHTML = "<img src='img/attack2-new.png' width='45px' alt='Attack Icon' />: " +
               player.attack + ' <br /> You received ' + monster.specialAttack + ' attack damage from the Hulk!'
             monsterTextStatus.innerHTML = "<img src='img/special-attack1-new.png' width='45px' alt='Special Attack Icon' />: " +
-              monster.specialAttack + ' <br /> The Hulk received ' + player.attack + ' attack damage from the ' + newPlayerClass + '!'
+              monster.specialAttack + ' <br /> The Hulk received ' + player.attack + ' attack damage from the ' + localStorage.getItem('name') + '!'
           }, 500)
         }
       }
@@ -739,7 +739,7 @@ button.addEventListener('click', function (e) {
             playerTextStatus.innerHTML = "<img src='img/special-attack1-new.png' width='45px' alt='Attack Icon' />: " +
               player.specialAttack + ' <br /> You received ' + monster.attack + ' attack damage from Hulk!'
             monsterTextStatus.innerHTML = "<img src='img/attack2-new.png' width='45px' alt='Attack Icon' />: " +
-              monster.attack + ' <br /> The Hulk received ' + player.specialAttack + ' special attack damage from the ' + newPlayerClass + '!'
+              monster.attack + ' <br /> The Hulk received ' + player.specialAttack + ' special attack damage from the ' + localStorage.getItem('name') + '!'
           }, 500)
         }
         if (i === 1) {
@@ -828,7 +828,7 @@ button.addEventListener('click', function (e) {
             playerTextStatus.innerHTML = "<img src='img/special-attack1-new.png' width='45px' alt='Attack Icon' />: " +
               player.specialAttack + ' <br /> You received ' + monster.specialAttack + ' attack damage from the Hulk!'
             monsterTextStatus.innerHTML = "<img src='img/special-attack1-new.png' width='45px' alt='Special Attack Icon' />: " +
-              monster.specialAttack + ' <br /> The Hulk received ' + player.specialAttack + ' attack damage from the ' + newPlayerClass + '!'
+              monster.specialAttack + ' <br /> The Hulk received ' + player.specialAttack + ' attack damage from the ' + localStorage.getItem('name') + '!'
           }, 500)
         }
       }
@@ -852,7 +852,6 @@ button.addEventListener('click', function (e) {
     }, 2500)
 
     setTimeout(function () {
-      hitDamage[0].style.visibility = 'hidden'
       hitDamage[0].style.opacity = '0'
 
       hitDamage[1].style.visibility = 'hidden'
@@ -860,7 +859,6 @@ button.addEventListener('click', function (e) {
     }, 3500)
 
     setTimeout(function () {
-      hitDamage[0].style.bottom = '5px'
       hitDamage[1].style.bottom = '5px'
 
       hitDamage[0].innerHTML = ''
@@ -881,14 +879,25 @@ button.addEventListener('click', function (e) {
     monsterRandomButton = Math.floor((Math.random() * 3) + 1)
   })
 
+  let inputScore, maxHealth, currHealth
 
   var checkHealthPoint = setInterval(function () {
     if (playerHealthProgress.getAttribute('value') < 0) {
       main.innerHTML = ''
       main.className = 'end'
 
+      console.log(localStorage.getItem('id'))
+      $.ajax({
+        type: 'DELETE',
+        url: 'http://localhost:3000/api/players/' + localStorage.getItem('id'),
+        dataType: 'json',
+        success: function (data) {
+          console.log('Data deleted')
+        }
+      })
+
       var createHeading4 = document.createElement('h1')
-      createHeading4.innerHTML = 'Too bad.. You Lose'
+      createHeading4.innerHTML = 'Too bad.. You Lose ' + localStorage.getItem('name')
       main.appendChild(createHeading4)
 
       var createLoseSong = document.createElement('audio')
@@ -905,6 +914,46 @@ button.addEventListener('click', function (e) {
 
       var resetButton = document.getElementById('play-again')
 
+      currHealth = monsterHealthProgress.getAttribute('value')
+      maxHealth = monsterHealthProgress.getAttribute('max')
+
+      inputScore = Math.floor((currHealth / maxHealth) * 100)
+
+      $('#main').append(
+        `
+        <div class="container white-text" style="position:relative; top:100px;">
+          <div class="row">
+            <div class="high-score">
+              <h2 class="center" style="font-family:bangers">High Score</h2>
+              <hr style="width:32%">
+              <div id="player_name" class="col s6 center" style="font-size:28px; font-family:orbitron">
+
+              </div>
+              <div id="player_score" class="col s6 center" style="font-size:28px; font-family:orbitron">
+
+              </div>
+            </div>
+          </div>
+        </div>
+        `
+      )
+
+      setTimeout(function () {
+        $.ajax({
+          type: 'GET',
+          url: 'http://localhost:3000/api/players',
+          dataType: 'json',
+          success: function (data) {
+            console.log(data)
+            data.forEach(function (player) {
+              $('#player_name').append(`<p>${player.name}</p>`)
+              $('#player_score').append(`<p>${player.score}%</p>`)
+            })
+          }
+        })
+      }, 250)
+
+
       resetButton.addEventListener('click', function (e) {
         location.reload()
       })
@@ -912,11 +961,25 @@ button.addEventListener('click', function (e) {
       clearInterval(checkHealthPoint)
     }
     if (monsterHealthProgress.getAttribute('value') < 0) {
+      currHealth = playerHealthProgress.getAttribute('value')
+      maxHealth = playerHealthProgress.getAttribute('max')
+      inputScore = Math.floor((currHealth / maxHealth) * 100)
+
+      $.ajax({
+        type: 'PUT',
+        url: 'http://localhost:3000/api/players/' + localStorage.getItem('id'),
+        dataType: 'json',
+        data: { score: inputScore },
+        success: function (data) {
+          console.log(data)
+        }
+      })
+
       main.innerHTML = ''
       main.className = 'end'
 
       var createHeading3 = document.createElement('h1')
-      createHeading3.innerHTML = 'Congratulation, You Win!'
+      createHeading3.innerHTML = 'You Win ' + localStorage.getItem('name') + '!'
       main.appendChild(createHeading3)
 
       var createWinSong = document.createElement('audio')
@@ -932,6 +995,40 @@ button.addEventListener('click', function (e) {
       main.appendChild(createResetButton)
 
       resetButton = document.getElementById('play-again')
+
+      $('#main').append(
+        `
+        <div class="container white-text" style="position:relative; top:100px;">
+          <div class="row">
+            <div class="high-score">
+              <h2 class="center" style="font-family:bangers">High Score</h2>
+              <hr style="width:32%">
+              <div id="player_name" class="col s6 center" style="font-size:28px; font-family:orbitron">
+
+              </div>
+              <div id="player_score" class="col s6 center" style="font-size:28px; font-family:orbitron">
+
+              </div>
+            </div>
+          </div>
+        </div>
+        `
+      )
+
+      setTimeout(function () {
+        $.ajax({
+          type: 'GET',
+          url: 'http://localhost:3000/api/players',
+          dataType: 'json',
+          success: function (data) {
+            console.log(data)
+            data.forEach(function (player) {
+              $('#player_name').append(`<p>${player.name}</p>`)
+              $('#player_score').append(`<p>${player.score}%</p>`)
+            })
+          }
+        })
+      }, 250)
 
       resetButton.addEventListener('click', function (e) {
         location.reload()
