@@ -172,6 +172,8 @@ var createListItemText = document.createTextNode('Good Luck & Have Fun!')
 unorderedList[0].appendChild(createListItem)
 createListItem.appendChild(createListItemText)
 
+$('li').css('list-style-type','disc')
+
 // Buat tag button dengan id start-game didalam container
 var createButton = document.createElement('button')
 var createButtonText = document.createTextNode('Start Game!')
@@ -181,6 +183,7 @@ createButton.appendChild(createButtonText)
 
 var createInput = document.createElement('input')
 createInput.setAttribute('type', 'hidden')
+createInput.setAttribute('id', 'pickClass')
 createInput.setAttribute('value', '')
 body.appendChild(createInput)
 
@@ -205,6 +208,7 @@ var introSong = document.getElementById('intro-song')
 introSong.volume = 0.5
 
 // Buat tag input dengan attribute hidden untuk passing data
+var pickClass = document.getElementById('pickClass')
 var input = document.getElementsByTagName('input')
 var pick = ''
 var pickMap = 2
@@ -223,7 +227,7 @@ characterBox[0].addEventListener('click', function () {
   createPickSound.setAttribute('src', 'audio/attack_button.mp3')
 
   pick = 'warrior'
-  input[0].value = pick
+  pickClass.value = pick
 })
 
 characterBox[1].addEventListener('click', function () {
@@ -235,7 +239,7 @@ characterBox[1].addEventListener('click', function () {
   createPickSound.setAttribute('src', 'audio/attack_button.mp3')
 
   pick = 'assassin'
-  input[0].value = pick
+  pickClass.value = pick
 })
 
 // Pilihan Map dengan click event
@@ -246,7 +250,7 @@ imageArena1.addEventListener('click', function () {
 
   createPickSound.setAttribute('src', 'audio/attack_button.mp3')
   pickMap = 1
-  input[1].value = pickMap
+  input[2].value = pickMap
 })
 
 imageArena2.addEventListener('click', function () {
@@ -256,7 +260,7 @@ imageArena2.addEventListener('click', function () {
 
   createPickSound.setAttribute('src', 'audio/attack_button.mp3')
   pickMap = 2
-  input[1].value = pickMap
+  input[2].value = pickMap
 })
 
 imageArena3.addEventListener('click', function () {
@@ -266,5 +270,5 @@ imageArena3.addEventListener('click', function () {
 
   createPickSound.setAttribute('src', 'audio/attack_button.mp3')
   pickMap = 3
-  input[1].value = pickMap
+  input[2].value = pickMap
 })

@@ -1,10 +1,10 @@
 var button = document.getElementById('start-game')
 
 button.addEventListener('click', function (e) {
-  var playerClass = input[0].value
+  var playerClass = pickClass.value
 
-  if (playerClass === '') {
-    alert('Please Pick a Character')
+  if (!playerClass) {
+    Materialize.toast('Please pick a character! ', 4000)
     preventDefault()
   }
 
