@@ -17,7 +17,7 @@ Technology Used:
 ![Alt text](/screenshot/end.png?raw=true "High Score")
 
 ```
-cd server -> npm install
+cd server -> npm install, npm start
 cd client -> live-server
 ```
 
